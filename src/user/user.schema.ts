@@ -1,5 +1,5 @@
-import { Schema, model, Types, Document } from 'mongoose';
-
+import { Schema, Types, Document } from 'mongoose';
+import validator from 'validator';
 export interface User {
   _id?: string;
   name?: string;
@@ -17,6 +17,12 @@ export const schema = new Schema(
       type: String,
       required: true,
       unique: [true, 'Email must to be unique'],
+      validate: {
+        validator: value => {
+          return validator.isEmail(value);
+        },
+        message: 'this email is not valid',
+      },
     },
     friend: {
       type: String,
