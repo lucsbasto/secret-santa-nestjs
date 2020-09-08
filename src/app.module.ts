@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { RaffleController } from './raffle/raffle.controller';
+import { RaffleService } from './raffle/raffle.service';
 @Module({
   imports: [MongooseModule.forRoot('mongo://loc'), UserModule],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, RaffleController],
+  providers: [AppService, RaffleService],
 })
 export class AppModule {}
