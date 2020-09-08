@@ -1,3 +1,4 @@
+import { EmailService } from './utils/email.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,6 +9,6 @@ import { RaffleService } from './raffle/raffle.service';
 @Module({
   imports: [MongooseModule.forRoot('mongo://loc'), UserModule],
   controllers: [AppController, RaffleController],
-  providers: [AppService, RaffleService],
+  providers: [EmailService, AppService, RaffleService],
 })
 export class AppModule {}
