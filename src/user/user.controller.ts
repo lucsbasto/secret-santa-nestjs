@@ -20,10 +20,10 @@ export class UserController {
   @Get('')
   async index(res: Response): Promise<Response> {
     try {
-      const users = await this.userService.index();
-      return res.status(200).send(users);
+      const data = await this.userService.index();
+      return res.status(200).send(data);
     } catch (error) {
-      return res.status(400).send({ error: error.message });
+      return res.status(400).send({ error: error.message, stack: error.stack });
     }
   }
   @Get('id')

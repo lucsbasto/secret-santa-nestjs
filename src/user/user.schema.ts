@@ -2,9 +2,9 @@ import { Schema, Types, Document } from 'mongoose';
 import validator from 'validator';
 export interface User {
   _id?: string;
-  name?: string;
-  email?: string;
-  friend?: string;
+  name: string;
+  email: string;
+  friend: string;
 }
 
 export const schema = new Schema(
