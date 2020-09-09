@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserModel } from './user.schema';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { RaffleService } from '../raffle/raffle.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userModel: Model<UserModel>) {}
+  constructor(
+    @InjectModel('User')
+    private readonly userModel: Model<UserModel>,
+    private readonly raffleService: RaffleService,
+  ) {}
 
   async store(user: User): Promise<User> {
-    const createdUser = await this.userModel.create(user);
+    const createdUser = new this.userModel(user);
+    await createdUser.save();
     return createdUser;
   }
 
-  async index(params?): Promise<any> {
+  async index(params?: { page: number; limit: number }): Promise<User[]> {
     try {
       const { page = 1, limit = 10 } = params;
       const users = await this.userModel
         .find({})
         .limit(limit * 1)
         .skip((page - 1) * limit);
-
-      const count = await this.userModel.countDocuments();
-      return {
-        totalPages: Math.ceil(count / limit),
-        currentPage: Number(page),
-        total: count,
-        users,
-      };
+      return users;
     } catch (error) {
       throw new Error(error);
     }
@@ -65,5 +65,13 @@ export class UserService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async raffleUsers(): Promise<void> {
+    const users = await this.userModel.find({});
+    const raffledUsers = await this.raffleService.raffleUntilIsAllMatched(
+      users,
+    );
+    console.log(raffledUsers);
   }
 }

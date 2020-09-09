@@ -4,11 +4,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RaffleController } from './raffle/raffle.controller';
 import { RaffleService } from './raffle/raffle.service';
+import { RaffleModule } from './raffle/raffle.module';
 @Module({
-  imports: [MongooseModule.forRoot('mongo://loc'), UserModule],
-  controllers: [AppController, RaffleController],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://admin:huexf0eLXn4NRBZV@cluster0.x4yvu.mongodb.net/secret-santa?retryWrites=true&w=majority',
+    ),
+    UserModule,
+    RaffleModule,
+  ],
+  controllers: [AppController],
   providers: [EmailService, AppService, RaffleService],
 })
 export class AppModule {}
